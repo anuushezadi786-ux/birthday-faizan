@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🎉 Happy Birthday Faizan Bhai! 🥳</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* Body & Soft Background */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #fdf6e3, #f0e6f7, #d4f0fc, #fef9f6);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    overflow-x: hidden;
+    color: #222; /* Dark text for contrast */
+}
+@keyframes gradientBG { 0% {background-position:0% 50%;} 50% {background-position:100% 50%;} 100% {background-position:0% 50%;} }
+
+/* Glittering Rainbow Header */
+h1 {
+    font-size: 3em;
+    margin-top: 40px;
+    text-shadow: 2px 2px 10px #aaa;
+    background: linear-gradient(90deg, #FF4500, #FF69B4, #00CED1, #FFD700);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glitter 3s linear infinite;
+}
+@keyframes glitter {0%{background-position:0%}100%{background-position:300%;}}
+
+/* Content Area */
+.content {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 900px;
+    min-height: 250px;
+}
+
+/* Messages */
+.message {
+    font-size: 1.6em;
+    line-height: 1.6em;
+    text-shadow: 2px 2px 5px #aaa;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    margin-bottom: 20px;
+}
+.message.show { opacity: 1; }
+
+/* Buttons */
+.button {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 1.5em;
+    background: gold;
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 0 30px #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.button:hover { transform: scale(1.1); box-shadow:0 0 60px #fff; }
+
+/* Gallery */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+}
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #fff;
+    transition: transform 0.3s;
+}
+.gallery-item img:hover { transform: scale(1.1); }
+.caption {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #222;
+    text-shadow: 1px 1px 2px #aaa;
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    top: -10px;
+    z-index: 9999;
+    animation: fall 5s linear infinite;
+    opacity: 0.9;
+}
+@keyframes fall { 0%{transform:translateY(0) rotate(0deg);} 100%{transform:translateY(100vh) rotate(360deg);} }
+
+/* Fireworks */
+canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+
+/* Responsive */
+@media(max-width:600px){
+    .gallery-item img { width: 140px; height: 140px; }
+    h1 { font-size: 2em; }
+    .message { font-size: 1.2em; }
+}
+</style>
+</head>
+<body>
+
+<h1>🎉 Happy Birthday Faizan Bhai! 🥳💖🎂</h1>
+
+<div class="content" id="content">
+    <button class="button" id="nextBtn">🎁 Click for Surprise 🎉</button>
+</div>
+
+<!-- Background Music -->
+<audio autoplay loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Fireworks Canvas -->
+<canvas id="fireworks"></canvas>
+
+<script>
+// Confetti
+for(let i=0;i<200;i++){
+    let c=document.createElement('div');
+    c.classList.add('confetti');
+    c.style.left=Math.random()*100+'vw';
+    c.style.backgroundColor=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.animationDuration=3+Math.random()*5+'s';
+    document.body.appendChild(c);
+}
+
+// Fireworks
+const canvas=document.getElementById('fireworks');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+const fireworks=[];
+function random(min,max){return Math.random()*(max-min)+min;}
+class Firework{
+    constructor(){
+        this.x=random(0,canvas.width); this.y=canvas.height; this.targetY=random(canvas.height/4,canvas.height/2);
+        this.particles=[]; this.exploded=false;
+    }
+    update(){
+        if(this.y>this.targetY){this.y-=5;}else{this.explode();}
+    }
+    explode(){
+        if(!this.exploded){
+            for(let i=0;i<50;i++){this.particles.push({x:this.x,y:this.y,vx:random(-5,5),vy:random(-5,5),alpha:1});}
+            this.exploded=true;
+        }
+    }
+    draw(){
+        if(!this.exploded){ctx.beginPath();ctx.arc(this.x,this.y,3,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();}
+        else{
+            this.particles.forEach(p=>{
+                ctx.beginPath();
+                ctx.arc(p.x,p.y,2,0,Math.PI*2);
+                ctx.fillStyle=`hsla(${Math.random()*360},100%,50%,${p.alpha})`;
+                ctx.fill();
+                p.x+=p.vx;p.y+=p.vy;p.alpha-=0.02;
+            });
+            this.particles=this.particles.filter(p=>p.alpha>0);
+        }
+    }
+}
+function animateFireworks(){ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(Math.random()<0.05) fireworks.push(new Firework());
+    fireworks.forEach(f=>{f.update(); f.draw();});
+    requestAnimationFrame(animateFireworks);
+}
+animateFireworks();
+
+// Sequential Wishes & Gallery with captions
+const content=document.getElementById('content');
+const btn=document.getElementById('nextBtn');
+
+const steps=[
+    {type:'message', text:"🎊🥳 Surprise! Happy Birthday Faizan Bhai! Tum duniya ke sabse awesome bhai ho! 💖🔥🎉"},
+    {type:'message', text:"🎈 Tum sirf mere bhai nahi, meri taqat 💪, mery saathi 🤝 aur meri life k sabse amazing hero ho 🦸‍♂️🔥."},
+    {type:'message', text:"🌙 Allah tumhari zindagi khushiyon 😄🎈, success 🏆💰 aur dher sary amazing moments 🎁🎊 se bhar de."},
+    {type:'message', text:"😁 Hamesha hasi 😂, mzak 😜🎮 aur maza karte raho 🏄‍♂️⚡, kyunki duniya 🌏 tumhare bina adhoori hai! ❤️💫"},
+    {type:'gallery', items:[
+        {img:"images/aa.jpeg", caption:"میرے بھائی میری دعاؤں کا اثر ہو تم،<br>میری زندگی کی سب سے خوبصورت خبر ہو تم 💖✨"},
+        {img:"images/as.jpeg", caption:"خدا نے جو دیا سب سے حسین تحفہ مجھے،<br>وہ میرا بھائی ہے، یہی میری پہچان ہے 🌙❤️"},
+        {img:"images/ad.jpeg", caption:"ہر مشکل میں جو سایہ بن کر ساتھ چلا،<br>وہ میرا بھائی ہے، جس نے مجھے جینا سکھا 🤍💫"},
+        {img:"images/af.jpeg", caption:"میری ہر خوشی کی وجہ ہو تم،<br>اے میرے بھائی میری دنیا ہو تم ❤️🌍"},
+        {img:"images/ag.jpeg", caption:"میرے نصیب کی سب سے خوبصورت لکیر ہو تم،<br>اے میرے بھائی میری تقدیر ہو تم 🌙💖"}
+    ]}
+];
+
+let stepIndex=0;
+
+btn.addEventListener('click', showStep);
+
+function showStep(){
+    if(stepIndex >= steps.length) return;
+
+    content.innerHTML=''; // clear previous
+
+    const step = steps[stepIndex];
+
+    if(step.type==='message'){
+        const msg = document.createElement('div');
+        msg.classList.add('message','show');
+        msg.innerHTML = step.text;
+        content.appendChild(msg);
+    }
+
+    if(step.type==='gallery'){
+        const gallery = document.createElement('div');
+        gallery.classList.add('gallery');
+        step.items.forEach(item=>{
+            const div=document.createElement('div');
+            div.classList.add('gallery-item');
+            const img=document.createElement('img'); img.src=item.img;
+            const cap=document.createElement('div'); cap.classList.add('caption'); cap.innerHTML=item.caption;
+            div.appendChild(img); div.appendChild(cap);
+            gallery.appendChild(div);
+        });
+        content.appendChild(gallery);
+    }
+
+    stepIndex++;
+    if(stepIndex < steps.length){
+        const nextBtn = document.createElement('button');
+        nextBtn.classList.add('button');
+        nextBtn.innerText = "➡️ Next";
+        nextBtn.addEventListener('click', showStep);
+        content.appendChild(nextBtn);
+    }
+}
+</script>
+
+</body>
+</html> 
